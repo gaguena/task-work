@@ -6,7 +6,8 @@ module.exports = class TaskService {
     }
 
     save(task) {
-        new TaskModel(task).save();
+        console.log('Salvando task: ' + task);
+        new TaskModel().save(task);
     }
 
     findAll() {

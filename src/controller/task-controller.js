@@ -1,5 +1,3 @@
-const app = require("../../app");
-
 const express = require('express');
 const TaskService = require("../service/task-service");
 
@@ -17,6 +15,7 @@ const TaskController  = {
         });
     },
     save: (req, resp) => {
+        console.log('controller: ' + req.body);
         new TaskService().save(req.body);
         resp.redirect('/tasks')
     }
