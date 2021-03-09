@@ -1,0 +1,13 @@
+<div class="col-sm-8 container-fluid">
+    <h1 class="display-4">Tarefas</h1>
+    <div class="row">
+        <div class="col-md-4">
+          <h2><%= task.title %></h2>
+          <p><%= task.description %></p>
+          <div class="form-group form-check">
+            <input type="checkbox" class="data-check-id form-check-input" id="task-status" data-id="<%=task._id %>">
+            <label class="form-check-label" style="margin-top: 3px" for="task-status"><%=task.status ? 'OK' : 'NOK' %></label>
+          </div>
+        </div>
+    </div>
+</div>

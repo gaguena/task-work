@@ -17,11 +17,16 @@ app.set('view engine', 'ejs');
 //app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json()).use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use('/jquery',express.static(path.join(__dirname, '/node_modules/jquery/dist/')));  
 app.use('/bootstrap/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
 app.use('/bootstrap/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
 app.use('/bootstrap/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')));
 
 app.use("/tasks", taskRouter);
+
+//var SequenceGeneretor = require('./src/config/db/sequence-generetor');
+
+//new SequenceGeneretor().generetor();
 
 app.listen(port, () => {
   console.log(`Started APP in port: ${port}`)

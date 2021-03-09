@@ -1,4 +1,6 @@
-const db = require("../db/database")
+const db = require("../db/database");
+const BasicException = require("../exception/basic-exception");
+const NotFoundException = require("../exception/notFound-exception");
 
 const Task = db.model('task', {title: String, description: String, status: Boolean});
 
@@ -12,6 +14,13 @@ module.exports = class TaskModel {
       return;
     }
 
+    findById(id) {
+        return Task.findById(id, (error, result) => {
+            if(error)
+                throw new NotFoundException("Not found task by id");
+        });
+    }
+
     findAll(callBack) {
         return new Promise((resolve, reject) => {
             Task.find({}, function(err, result) {
@@ -21,5 +30,22 @@ module.exports = class TaskModel {
             return reject("erro ao consultar");
             });
         });
+    }
+
+    delete(id) {
+        try {
+            this.findById(id).then((task) => {
+                Task.findOneAndRemove({"_id": task._id }).then(function () {
+                    console.log("Data deleted"); // Success 
+                }).catch(function (error) {
+                    console.log(error); // Failure
+                    throw new BasicException("Not found task by id");
+                });
+            });
+            
+        } catch (ex) {
+            throw ex;
+        }
+        return;
     }
 }

@@ -7,7 +7,15 @@ const TaskController  = {
 
     taskOne:(req, resp) => {
         console.log('Recebendo o parametro: ' + req.params.code);
-        resp.redirect('/tasks')
+        new TaskService().findOne(req.params.code)
+        .then((data) => {
+            console.log(("Sucesso: " + data))
+            resp.render('task/task-detalhe-page', {task: data});
+        }).catch((error) => {
+            console.log('Erro >>>>: ' + error);
+            resp.redirect('/tasks');
+        });
+        
     },
     tasksAll: (req, resp) => {
         new TaskService().findAll().then((datas) => {
@@ -22,12 +30,23 @@ const TaskController  = {
         console.log('controller: ' + req.body);
         new TaskService().save(req.body);
         resp.redirect('/tasks')
+    },
+    delete: (req, res) => {
+        try {
+            var id = req.params.code;
+            console.log('delete item: ' + id);
+            new TaskService().delete(id);
+            res.sendStatus(204);
+        } catch(ex) {
+            res.sendStatus(400);
+        }
     }
 }
 
 
 taskRouter.get("/", TaskController.tasksAll);
 taskRouter.get("/:code/", TaskController.taskOne);
+taskRouter.delete("/:code", TaskController.delete);
 taskRouter.post("/", TaskController.save);
 
 module.exports = taskRouter;
